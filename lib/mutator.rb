@@ -13,4 +13,8 @@ class Mutator
 
     $?
   end
+
+  def swap(content, current_word, new_word)
+    content.gsub(current_word, new_word)
+  end
 end

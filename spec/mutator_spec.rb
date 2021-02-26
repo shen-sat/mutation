@@ -40,8 +40,18 @@ RSpec.describe Mutator do
         expect(result.exitstatus).not_to eq(0)
       end
     end
-
   end
-  
-  
+
+  describe '#swap' do
+    it 'swaps strings' do
+      content = "let(:foobar) { FactoryBot.create(:foobar) }\n"
+      current_word = 'FactoryBot.create'
+      new_word = 'FactoryBot.build'
+      mutator = Mutator.new
+
+      new_content = mutator.swap(content, current_word, new_word)
+
+      expect(new_content).to eq("let(:foobar) { FactoryBot.build(:foobar) }\n")
+    end
+  end
 end
