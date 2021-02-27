@@ -29,6 +29,13 @@ class Mutator
       swap(line, current_text, new_text)
 
       write_lines_to_file(filename, lines)
+
+      result = run_spec(filename)
+
+      if result.exitstatus != 0
+        swap(line, new_text, current_text)
+        write_lines_to_file(filename, lines)        
+      end
     end
   end
 end

@@ -95,5 +95,25 @@ RSpec.describe Mutator do
         File.delete(filename) 
       end
     end
+    context 'when swapped text does not pass test' do
+      it 'does not swap text' do
+        #setup
+        content_for_spec = "RSpec.describe 'FactoryBot.create' do\n  \n  it 'passes' do\n    expect(1).to eq(2)\n  end\nend\n"
+
+        filename = 'fixture/foobar_spec.rb'
+
+        File.write(filename, content_for_spec)
+        #test setup passes
+        expect(system("rspec #{filename}", :out => File::NULL)).to eq(false)
+
+        #test
+        mutator = Mutator.new
+        mutator.run(filename, 'FactoryBot.create', 'FactoryBot.build')
+
+        expect(File.read(filename)).to eq("RSpec.describe 'FactoryBot.create' do\n  \n  it 'passes' do\n    expect(1).to eq(2)\n  end\nend\n")
+
+        File.delete(filename) 
+      end
+    end
   end
 end
