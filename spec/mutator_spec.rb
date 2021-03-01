@@ -1,38 +1,20 @@
 require_relative '../lib/mutator'
 
 RSpec.describe Mutator do
- let(:mutator) { Mutator.new }
+  it 'swaps text in passing tests only' do
+    swappable_content = File.read('fixture/swappable_spec.rb')
+    swapped_content = File.read('fixture/swapped_spec.rb')
 
-  describe '#run' do
-    let(:filename) { 'tmp/example_spec.rb' }
+    filename = 'tmp/example_spec.rb'
 
-    before { File.write(filename, content_for_spec) }
+    File.write(filename, swappable_content)
 
-    context 'when swapped text passes test' do
-      let(:content_for_spec) { "RSpec.describe 'FactoryBot.create' do\n  \n  it 'passes' do\n    expect(1).to eq(1)\n  end\nend\n" }
-      
-      it 'swaps text' do
-        expect(system("rspec #{filename}", :out => File::NULL)).to eq(true)
+    expect(system("rspec #{filename}", :out => File::NULL)).to eq(true)
 
-        mutator.run(filename, 'FactoryBot.create', 'FactoryBot.build')
+    Mutator.new.run(filename, 'FactoryBotFake.create', 'FactoryBotFake.build')
 
-        expect(File.read(filename)).to eq("RSpec.describe 'FactoryBot.build' do\n  \n  it 'passes' do\n    expect(1).to eq(1)\n  end\nend\n")
+    expect(File.read(filename)).to eq(swapped_content)
 
-        File.delete(filename) 
-      end
-    end
-    context 'when swapped text does not pass test' do
-      let(:content_for_spec) { "RSpec.describe 'FactoryBot.create' do\n  \n  it 'passes' do\n    expect(1).to eq(2)\n  end\nend\n" }
-      
-      it 'does not swap text' do
-        expect(system("rspec #{filename}", :out => File::NULL)).to eq(false)
-
-        mutator.run(filename, 'FactoryBot.create', 'FactoryBot.build')
-
-        expect(File.read(filename)).to eq("RSpec.describe 'FactoryBot.create' do\n  \n  it 'passes' do\n    expect(1).to eq(2)\n  end\nend\n")
-
-        File.delete(filename) 
-      end
-    end
+    File.delete(filename)
   end
 end

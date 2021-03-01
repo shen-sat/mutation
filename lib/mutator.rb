@@ -8,7 +8,7 @@ class Mutator
       swap(line, current_text, new_text)
 
       write_lines_to_file(filename, lines)
-
+      
       if !spec_passes?(filename)
         swap(line, new_text, current_text)
         write_lines_to_file(filename, lines)        
