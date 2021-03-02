@@ -1,0 +1,2 @@
+- app should skip a spec if it fails when running it before swapping anything
+- app should skip a file that raises an error
