@@ -1,5 +1,7 @@
 class Mutator
   def run(filename, current_text, new_text)
+    return if !spec_passes?(filename)
+
     lines = File.readlines(filename)
 
     lines.each do |line|
