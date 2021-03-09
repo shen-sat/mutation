@@ -1,2 +1,12 @@
+- check that rspec-rails is installed
+- create a model in rails
+- create a factory for that model
+- create a test that relies on factory being in db
+- create a test that doesn't
+- create a test folder with a test script that runs the above two tests
+- add mutator to project
+
+
+-- DONE
 - app should skip a spec if it fails when running it before swapping anything
 - app should skip a file that raises an error
