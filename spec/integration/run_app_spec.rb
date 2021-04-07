@@ -1,4 +1,4 @@
-RSpec.describe 'run app' do
+RSpec.describe 'run app', :clean_up do
   it 'swaps text in passing tests only' do
     failing_content = File.read('fixture/failing_spec.rb')
     swappable_content = File.read('fixture/swappable_spec.rb')
@@ -19,9 +19,5 @@ RSpec.describe 'run app' do
     expect(File.read(failing_filename)).to eq(failing_content)
     expect(File.read(swappable_filename)).to eq(swapped_content)
     expect(File.read(error_filename)).to eq(error_content)
-
-    File.delete(failing_filename)
-    File.delete(swappable_filename)
-    File.delete(error_filename)
   end
 end
